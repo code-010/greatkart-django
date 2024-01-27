@@ -1,0 +1,73 @@
+.Vy94J0 {
+    text-align: center;
+    background: white;
+    padding: 50px 0;
+}
+
+.Vy94J0 ._2giOt4 {
+    height: 162px;
+}
+
+.Vy94J0 ._1LCJ1U {
+    display: block;
+    font-size: 18px;
+    margin-top: 24px;
+}
+
+.Vy94J0 .hKIFfL {
+    display: block;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.Vy94J0 ._1sbqEe {
+    font-size: 14px;
+    margin-top: 20px;
+    font-weight: 400;
+    padding: 12px 72px;
+}
+
+._2KpZ6l._3dESVI {
+    background: #2874f0;
+    color: #fff;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+    border: none;
+}
+
+#custom-btn-group {
+    display: inline-block;
+}
+
+.btn-group > .variation-row > .btn:not(:last-child):not(.dropdown-toggle) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.btn-group > .variation-row > .btn:not(:first-child):not(.dropdown-toggle) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.btn-group > .variation-row > .btn:not(:first-child), .btn-group > .variation-row > .btn-group:not(:first-child) {
+    margin-left: -2px;
+}
+.btn-group > .variation-row > .btn:not(:last-child), .btn-group > .variation-row > .btn-group:not(:last-child) {
+    margin-right: -2px;
+}
+.btn-group > .variation-row > .btn {
+    position: relative;
+    flex: 1 1 auto;
+}
+
+.btn-group-sm > .variation-row > .btn {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.82rem;
+    line-height: 1.2;
+    border-radius: 0.37rem;
+}
+
+.btn-group-toggle > .variation-row > .btn input[type=radio] {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+    pointer-events: none;
+}
+
