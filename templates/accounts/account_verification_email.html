@@ -1,0 +1,91 @@
+{% autoescape off %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .verify-email-container {
+            font-family: Arial, sans-serif;
+            margin: 0 auto;
+            width: 80%;
+            text-align: center;
+	        margin-top: 80px;
+        }
+
+        .verify-email-message {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 0;
+        }
+
+        .verify-email-instructions {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .email-address {
+            font-weight: bold;
+        }
+
+        .verify-email-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        .app-description {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .support-options {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .twitter-handle {
+            font-weight: bold;
+        }
+
+        .feedback-invitation {
+            font-size: 16px;
+            margin-top: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="verify-email-container">
+        <p class="verify-email-message">Hi {{user.first_name}},</p>
+        <p class="verify-email-instructions">Please Verify that your email address is <span
+                class="email-address">{{user.email}}</span> and that you entered it when signing up for GreatKart.</p>
+        <a href="http://{{domain}}{% url 'activate' uidb64=uid token=token %}" target="_blank">
+            <button class="verify-email-button">Verify Email</button>
+        </a>
+        <p class="app-description">GreatKart is a vibrant online marketplace, where shopping becomes an experience 
+            and every click brings you closer to discovering the perfect products for your needs. At our e-commerce store
+            , we curate a diverse selection of high-quality items, ranging from trendy fashion and cutting-edge electronics 
+            to must-have home essentials.</p>
+        <p class="support-options">Need help? Contact our support team or hit us on Twitter <span
+                class="twitter-handle">@greatkart</span>.</p>
+        <p class="feedback-invitation">Want to give us feedback? Let us know what you think on our feedback site.</p>
+    </div>
+</body>
+
+</html>
+
+
+
+{% endautoescape %}
