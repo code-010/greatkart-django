@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<section class="section-content padding-y bg">
+	<div class="container">
+
+
+		<form action="{% url 'order_processing' %}" method="POST">
+			{% csrf_token %}
+			<!-- ============================ COMPONENT 2 ================================= -->
+			<div class="row">
+				<main class="col-md-8">
+
+					<article class="card mb-4">
+						<div class="card-body">
+							<h4 class="card-title mb-4">Review cart</h4>
+							<div class="row">
+								{% for item in cart_items %}
+								<div class="col-md-6">
+									<figure class="itemside  mb-4">
+										<div class="aside"><img src="{{ item.product.images.url }}"
+												class="border img-sm">
+										</div>
+										<figcaption class="info">
+											<p>{{ item.product.product_name }}</p>
+											<span class="text-muted">{{ item.quantity }}x = ${{ item.sub_total}} </span>
+										</figcaption>
+									</figure>
+								</div> <!-- col.// -->
+								{% endfor %}
+							</div> <!-- row.// -->
+						</div> <!-- card-body.// -->
+					</article> <!-- card.// -->
+
+
+					<article class="card mb-4">
+						<div class="card-body">
+							<h4 class="card-title mb-4">Billing Address</h4>
+
+							<div class="row">
+								<div class="form-group col-sm-6">
+									<label>Frst name</label>
+									<input type="text" placeholder="Type here" class="form-control">
+								</div>
+								<div class="form-group col-sm-6">
+									<label>Last name</label>
+									<input type="text" placeholder="Type here" class="form-control">
+								</div>
+								<div class="form-group col-sm-6">
+									<label>Phone</label>
+									<input type="text" value="+91" class="form-control">
+								</div>
+								<div class="form-group col-sm-6">
+									<label>Email</label>
+									<input type="email" placeholder="example@gmail.com" class="form-control">
+								</div>
+								<div class="form-group col-sm-12">
+									<label for="Address">Address</label>
+									<textarea class="form-control" placeholder="Full Address" id="addressLine1"
+										rows="3"></textarea>
+								</div>
+								<div class="form-group col-sm-6">
+									<label>City</label>
+									<input type="text" placeholder="City/District/Town" class="form-control">
+								</div>
+								<div class="form-group col-sm-6">
+									<label>State</label>
+									<input type="text" placeholder="State" class="form-control">
+								</div>
+								<div class="form-group col-sm-6">
+									<label>Pincode</label>
+									<input type="text" placeholder="Pincode" class="form-control">
+								</div>
+								<div class="form-group col-sm-6">
+									<label>Landmark</label>
+									<input type="text" placeholder="Landmark (Optional)" class="form-control">
+								</div>
+
+							</div> <!-- row.// -->
+
+						</div> <!-- card-body.// -->
+					</article> <!-- card.// -->
+
+
+
+					<article class="card accordion" id="accordion_pay">
+						<div class="card-body">
+							<h4 class="card-title mb-4">Payment Options</h4>
+
+							<div class="card">
+								<header class="card-header">
+									<img src="{% static 'images/misc/UPI.gif' %}" class="float-right" height="24">
+									<label class="form-check collapsed" data-toggle="collapse"
+										data-target="#upi_payment">
+										<input class="form-check-input" name="payment-option" checked type="radio"
+											value="upi">
+										<h6 class="form-check-label">
+											UPI
+										</h6>
+									</label>
+								</header>
+								<div id="upi_payment" class="collapse show" data-parent="#accordion_pay">
+									<div class="card-body">
+										<form class="form-inline">
+											<input type="text" class="form-control mr-2" placeholder="Enter UPI ID"
+												name="">
+											<button class="btn btn btn-primary"
+												style="min-width: 150px;">Verify</button>
+										</form>
+									</div> <!-- card body .// -->
+								</div>
+							</div>
+
+							<div class="card">
+								<header class="card-header">
+									<img src="{% static 'images/misc/payment-card.png' %}" class="float-right"
+										height="24">
+									<label class="form-check" data-toggle="collapse" data-target="#card_payment">
+										<input class="form-check-input" name="payment-option" type="radio" value="card">
+										<h6 class="form-check-label"> Credit / Debit / ATM Card </h6>
+									</label>
+								</header>
+								<div id="card_payment" class="collapse" data-parent="#accordion_pay">
+									<div class="card-body">
+										<p class="alert alert-success">Some information or instruction</p>
+										<form>
+											<div class="row">
+												<div class="form-group col-sm-12">
+													<input type="text" class="form-control mr-2"
+														placeholder="Enter Card Number" name="">
+												</div>
+												<div class="form-group col-sm-6">
+													<input type="text" class="form-control mr-2"
+														placeholder="Valid Thru (mm/yy)" name="">
+												</div>
+												<div class="form-group col-sm-6">
+													<input type="text" class="form-control mr-2" placeholder="CVV"
+														name="">
+												</div>
+											</div>
+											<button class="btn btn btn-success">Button</button>
+										</form>
+									</div> <!-- card body .// -->
+								</div> <!-- collapse .// -->
+							</div>
+
+							<div class="card">
+								<header class="card-header">
+									<img src="{% static 'images/misc/payment-paypal.png' %}" class="float-right"
+										height="24">
+									<label class="form-check collapsed" data-toggle="collapse"
+										data-target="#pay_paynet">
+										<input class="form-check-input" name="payment-option" type="radio"
+											value="paypal">
+										<h6 class="form-check-label">
+											Paypal
+										</h6>
+									</label>
+								</header>
+								<div id="pay_paynet" class="collapse" data-parent="#accordion_pay">
+									<div class="card-body">
+										<p class="text-center text-muted">Connect your PayPal account and use it to pay
+											your
+											bills. You'll be redirected to PayPal to add your billing information.</p>
+										<p class="text-center">
+											<a href="#"><img src="{% static 'images/misc/btn-paypal.png' %}"
+													height="32"></a>
+											<br><br>
+										</p>
+									</div> <!-- card body .// -->
+								</div> <!-- collapse .// -->
+							</div>
+						</div>
+
+
+					</article>
+					<!-- accordion end.// -->
+
+				</main> <!-- col.// -->
+				<aside class="col-md-4">
+					<div class="card">
+						<div class="card-body">
+							<dl class="dlist-align">
+								<dt>Total price:</dt>
+								<dd class="text-right">${{ total }}</dd>
+							</dl>
+							<dl class="dlist-align">
+								<dt>Tax:</dt>
+								<dd class="text-right"> ${{ tax }}</dd>
+							</dl>
+							<dl class="dlist-align">
+								<dt>Total:</dt>
+								<dd class="text-right text-dark b"><strong>${{ grand_total }}</strong></dd>
+							</dl>
+							<hr>
+							<p class="text-center mb-3">
+								<img src="{% static 'images/misc/payments.png' %}" height="26">
+							</p>
+							<!-- <a href="./place-order.html" class="btn btn-primary btn-block"> Place Order </a> -->
+							<button type="submit" class="btn btn-primary btn-block">Place Order</button>
+
+						</div> <!-- card-body.// -->
+					</div> <!-- card.// -->
+				</aside> <!-- col.// -->
+			</div> <!-- row.// -->
+
+			<!-- ============================ COMPONENT 2 END//  ================================= -->
+
+
+		</form>
+
+	</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+{% endblock %}

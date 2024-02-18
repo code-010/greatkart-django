@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.db.models import Q
 from .models import Account
 from .forms import RegistrationForm
 from django.contrib import messages, auth
@@ -13,6 +14,10 @@ from django.utils.html import strip_tags
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage, EmailMultiAlternatives
+
+from carts.views import _get_cart
+from carts.models import Cart, CartItem
+import requests
 
 # Create your views here.
 def register(request):
@@ -64,9 +69,54 @@ def login(request):
         user = auth.authenticate(email=email, password=password)
 
         if user is not None:
+            try:
+                cart_current_user = _get_cart(request)
+                cart_logged_user = Cart.objects.get(cart_id=user.email)
+                is_current_user_cart_items_exist = CartItem.objects.filter(cart=cart_current_user).exists()
+                if is_current_user_cart_items_exist:
+                    current_user_cart_items = CartItem.objects.filter(cart=cart_current_user)
+                    for item in current_user_cart_items:
+                        is_cartItem_exists = CartItem.objects.filter(cart=cart_logged_user, product=item.product).exists()
+                        if is_cartItem_exists:
+                            ExistedItem = CartItem.objects.filter(cart=cart_logged_user, product=item.product)
+                            VariationNotFound = True
+                            for i in ExistedItem:
+                                if set(i.variations.all()) == set(item.variations.all()):
+                                    VariationNotFound = False
+                                    i.quantity += item.quantity
+                                    i.save()
+                                    break
+                            if VariationNotFound:
+                                item.cart = cart_logged_user
+                                item.save()
+                        else:
+                            item.cart = cart_logged_user
+                            item.save()
+
+                cart_current_user.delete()
+            except Cart.DoesNotExist:
+                try:
+                    cart_current_user.cart_id = user.email
+                    cart_current_user.save()
+                except Exception as e:
+                    # Handle the exception for saving cart_current_user
+                    pass
+            except Exception as e:
+                # Handle other exceptions
+                pass
             auth.login(request, user)
             #messages.success(request, 'Succesfully Logged In')
-            return redirect('home')
+            try:
+                url = request.META.get('HTTP_REFERER')
+                query = requests.utils.urlparse(url).query
+                params = dict(x.split('=') for x in query.split('&'))
+                if 'next' in params:
+                    if params['next'] == "/cart/checkout/":
+                        return redirect('cart')
+                    else:
+                        return redirect(params['next'])
+            except:
+                return redirect('home')
         else:
             messages.error(request, 'Invalid Login Credentials!')
             return redirect('login')
